@@ -38,14 +38,14 @@
 >* Modifying the DOM (CSS formatting and appearance) with JavaScript
 
 ### Web client programming topics
-More DOM modification, continued
-Events
-Hyperlinks
-Images basics
-Navigation and menus
-Layout basics
-HTML Forms
-Image galleries
-Ajax, and simulating a call to a web service
-Media other than images – audio, video, canvas
-Adaptive and responsive layout for print and mobile targets
+>* More DOM modification, continued
+>* Events
+>* Hyperlinks
+>* Images basics
+>* Navigation and menus
+>* Layout basics
+>* HTML Forms
+>* Image galleries
+>* Ajax, and simulating a call to a web service
+>* Media other than images – audio, video, canvas
+>* Adaptive and responsive layout for print and mobile targets
