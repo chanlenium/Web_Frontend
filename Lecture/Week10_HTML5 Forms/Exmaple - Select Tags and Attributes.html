@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- saved from url=(0105)https://ict.senecacollege.ca/~patrick.crawford/shared/fall-2016/int222/lecture7/select-tags-optgroup.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+   <title>HTML FORM</title>
+   <style> 
+      body { margin: 0 20%; }
+   </style>
+</head>
+<body>
+  <h1>EXAMPLE - &lt;select&gt; Tags and Attributes</h1>
+
+
+  <form action="https://httpbin.org/post" method="post">
+
+	<h3>Multiple Selection with optgroup</h3>
+    <p>What would you like to do today?</p>
+	<p>
+	  <select name="what-to-do" id="what-to-do" multiple="" size="9">
+		<optgroup label="Morning">
+		   <option value="1" selected="selected"> Drink Coffee </option>
+		   <option value="2"> Take A Walk </option>
+		   <option value="3"> Buy A Bagel </option>
+		</optgroup>
+		<optgroup label="Evening">
+		   <option value="4"> Read A Book </option>
+		   <option value="5"> Watch TV    </option>
+		</optgroup>
+		<optgroup label="Any time">
+		   <option value="6"> Write a test </option>
+		</optgroup>
+	  </select>
+	</p>
+	<hr>
+	
+    <input type="submit" value="Submit">&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="    Clear   ">
+  </form>
+
+
+
+</body></html>

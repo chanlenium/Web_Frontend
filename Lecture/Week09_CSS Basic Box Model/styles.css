@@ -1,0 +1,173 @@
+html {
+    display: block;
+}
+
+html, body{
+    background-color: white;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+header{
+    display: block;
+}
+
+.page-heading{
+    font-family: "Raleway", sans-serif;
+    padding: 2em;
+    color: white;
+    text-align: center;
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%); /* linear-gradient(angle, color-stop1, color-stop2) */
+}
+
+.page-heading h1 {
+    font-size: 3em;
+    margin: 0.3em;
+}
+
+.page-heading p {
+    font-style: italic;
+}
+
+nav{
+    overflow: hidden;
+    font-family: "Raleway", sans-serif;
+    background-color: black;
+    margin-bottom: 2em;
+}
+
+nav a{
+    float: left;    /* left alignment */
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14pt 16pt; /* top/bottom:14  left/right:16 Do not user comma(,) */
+    text-decoration: none;
+}
+
+nav a.align-right {
+    float: right;   /* right alignment */
+}
+
+a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+main{
+    display: flex;
+    margin-left: auto;  /* allow the browser to split the margin evenly */
+    margin-right: auto;
+    max-width: 1024;
+}
+
+article {
+    display: block;
+    padding: .5em 1em;
+}
+
+.blog-title{
+    background: url("../Week09/Assignment5/assignment/image/main1.jpg") no-repeat;
+    background-size: cover; /* Resize the background image to cover the entire container */
+    height: 300px;
+    padding: 1.5em;
+    border-radius: .5em;
+    border: 1px solid black;
+}
+
+.blog-title h2{
+    font-size: 2em;
+    margin: 0em;
+}
+
+.blog-title p{
+    font-style: italic;
+    margin-top: 0.1em;
+}
+
+section {
+    display: block;
+}
+
+section p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+main aside {
+    display: block;
+}
+
+main aside {
+    font-family: "Raleway", sans-serif;
+    margin: 1em;
+    flex: 25%; /*
+    flex-grow: 1;   // specifies how much the item will grow relative to the rest of the flexible items inside the same container
+    flex-shrink: 1; // specifies how the item will shrink relative to the rest of the flexible items inside the same container
+    flex-basis: 25%; // specifies the initial length of a flexible item */
+}
+
+main aside header{
+    display: block;
+}
+
+main aside header h2 {
+    color: black;
+    padding: .5em;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+main aside ul{
+    list-style-type: none; /* no symbol */
+    margin: .7em;
+    padding: 0;
+}
+
+main aside ul li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+main aside ul li a {
+    color: #657786;
+    text-decoration: none;
+}
+
+footer {
+    display: block;
+}
+
+footer {
+    padding: .3em;
+    text-align: center;
+    background: black;
+    color: white;
+}
+
+@media screen and (max-width: 960px){
+    main aside {
+        display: none;
+    }
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+ <html>
+  <head>
+    <title>WEB222</title>
+    <meta charset="UTF-8" />
+	<link rel="stylesheet" href="css/normalize.css"/>
+	<link rel="stylesheet" href="css/lab3-theme.css"/>
+	<script src="js/table.js"></script>
+</head>
+<body>
+
+	<header>
+		<div class="center">
+			<h2>
+			     WEB222 - Assignment 3
+			</h2>
+		</div>
+	</header>
+	<nav>
+		<div class="center">
+		<ul>	
+			<li><a href="index.html">Home</a></li>
+			<li><a href="list.html">List</a></li>
+			<li><a href="table.html">Table</a></li>
+			<li><a href="image.html">Image</a></li>
+			<li><a href="audio.html">Audio</a></li>
+			<li><a href="video.html">Video</a></li>
+			<li><a href="honesty.html">Honesty</a></li>
+		</ul>
+		</div>
+	</nav>
+		
+	<section class="main center">
+	
+	<!-- Start your code here -->
+		<h2>HTML Tables</h2>
+		<h3>1st Table</h3>
+		<table style="border:1px solid;">
+			<caption>My Time Table</caption>
+
+			<tr>
+				<th>My program</th>
+				<th>courses enrolled</th>
+				<th>hours of course</th>
+			</tr>
+
+			<tr>
+				<td>Computer Programmer</td>
+				<td>DCF255_NBB</td>
+				<td>Fri 12:35PM - 3:15PM</td>
+			</tr>
+
+			<tr>
+				<td>Computer Programmer</td>
+				<td>DBS211_NBB</td>
+				<td>Tue 4:15PM - 6:00PM<br>
+					Fri 8:00AM - 9:45AM
+				</td>
+			</tr>
+
+			<tr>
+				<td>Computer Programmer</td>
+				<td>OOP244_NCC</td>
+				<td>Tue 12:35PM - 2:20PM<br>
+					Thu 3:20PM - 5:05PM
+				</td>
+			</tr>
+
+			<tr>
+				<td>Computer Programmer</td>
+				<td>WEB222_NDD</td>
+				<td>Tue 2:25PM - 4:10PM<br>
+					Thu 5:10PM - 6:55PM
+				</td>
+			</tr>
+		</table>
+		
+		
+		<h3>2nd Table</h3>
+		<table style="border:1px solid;">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+
+			<tbody>
+			<tr>
+				<td>Apple</td>
+				<td>$1.00</td>
+			</tr>
+
+			<tr>
+				<td>Banana</td>
+				<td>$0.25</td>
+			</tr>
+
+			<tr>
+				<td>Tomato</td>
+				<td>$1.50</td>
+			</tr>
+			</tbody>
+
+			<tfoot>
+				<tr>
+					<td>Sum</td>
+					<td>$2.75</td>
+				</tr>
+			</tfoot>
+		</table>
+	
+
+
+	<div id="userTable">
+		<h3>Table using JS</h3>
+		<style>
+			table{
+				font-family: arial, sans-serif;
+				border: 1px solid;
+				width: 100%;
+			}
+
+			td, th{
+				border: 1px solid;
+				padding: 8px;
+			}
+
+			th{
+				font-weight: bold;
+			}
+		</style>
+
+		<table>
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Age</th>
+					<th>Email</th>
+				</tr>
+			</thead>
+
+			<tbody></tbody>
+			<tfoot></tfoot>
+		</table>	
+	</div>
+	
+	</script><script src = "../js/table.js"></script>
+	<!-- End your code here  -->
+	
+	</section>
+	<footer>
+	  <div class="center">
+		  &copy; 2020 Dongchan Oh
+	  </div>
+	</footer>
+</body>
+</html>	  

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WEB222 Store</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <header class="page-heading">
+      <a href="index.html"> <img src="image/logo.JPG" alt="Fairy Tale Store" /> </a>
+      <h1>Fairy Tale Store</h1>
+      <h3>THE BEST FAIRY SHOP</h3>
+    </header>
+
+    <nav class="nav-wrapper">
+      <ul>
+        <li><a href="index.html" id="menu_1">All Items</a></li>
+        <li class="dropdown_book" id="menu_2">
+          <a href="index.html" class="bookbtn">Fairy Books</a>
+          <div class="book_contents">
+            <a href="index.html" id="menu_21">Reading books</a>
+            <a href="index.html" id="menu_22">Activity books</a>
+          </div>
+        </li>
+        <li class="dropdown_picture" id="menu_3">
+          <a href="index.html" class="picturebtn">Pictures</a>
+          <div class="picture_contents">
+            <a href="index.html" id="menu_31">Posters</a>
+            <a href="index.html" id="menu_32">Post Cards</a>
+          </div>
+        </li>
+        <li class="align-right" id="menu_4"><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <header class="title">
+        <h2>Welcome to Fairy Tale Store</h2>
+        <p>Hope All Dreams come true !!</p>
+      </header>
+
+      <div id="body-wrapper" class="row"></div>
+
+      <div id="boby-contactUs">
+        <form autocomplete="off" action="https://httpbin.org/post" method="post" id="usrform">
+          <h3>Contact email</h3>
+
+          <div class="contactRow">
+            <div class="col-25">
+              <label for="userName">Name: </label>
+            </div>
+            <div class="col-75">
+              <input
+                type="text"
+                name="userName"
+                id="userName"
+                placeholder="Input your name here (Max Length: 30)"
+                minlength="3"
+                maxlength="30"
+                required="required"
+              />
+            </div>
+          </div>
+
+          <div class="contactRow">
+            <div class="col-25">
+              <label for="userEmail">Email: </label>
+            </div>
+            <div class="col-75">
+              <input 
+                type="email"
+                name="userEmail"
+                id="userEmail"
+                required="required" 
+                minlength="3"
+                maxlength="30"
+                placeholder="Input your email here (Max Length: 30)"
+                /><br />
+            </div>
+          </div>
+
+          <div class="contactRow">
+            <div class="col-25">
+              <label for="userAddress">Address: </label>
+            </div>
+            <div class="col-75">
+              <input
+                type="text"
+                name="userAddress"
+                id="userAddress"
+                required="required"
+                minlength="3" 
+                maxlength="30"
+                placeholder="Input your address here (Max length: 30)"
+                /><br />
+            </div>
+          </div>
+
+          <div class="contactRow">
+            <div class="col-25">
+              <label for="userCity">City: </label>
+            </div>
+            <div class="col-75">
+              <select name="cities" id="userCity" required>
+                <option value="" disabled selected hidden>Choose a city</option>
+                <option value="Ottawa">Ottawa</option>
+                <option value="Edmonton">Edmonton</option>
+                <option value="Victoria">Victoria</option>
+                <option value="Winnipeg">Winnipeg</option>
+                <option value="Fredericton">Fredericton</option>
+                <option value="St. John's">St. John's</option>
+                <option value="Halifax">Halifax</option>
+                <option value="Toronto">Toronto</option>
+                <option value="Charlottetown">Charlottetown</option>
+                <option value="Quebec City">Quebec City</option>
+                <option value="Regina">Regina</option>
+                <option value="Yellowknife">Yellowknife</option>
+                <option value="Iqaluit">Iqaluit</option>
+                <option value="Whitehorse">Whitehorse</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="contactRow">
+            <div class="col-25">
+              <label for="Postal Code">Postal Code: </label>
+            </div>
+            <div class="col-75">
+              <input
+                type="text"
+                name="Postal Code"
+                id="Postal Code"
+                pattern="([A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9])|([A-Za-z][0-9][A-Za-z][0-9][A-Za-z][0-9])" 
+                required="required"
+                placeholder="Zip Code (Expression: 'A0A A0A' or 'A0AA0A')"
+              /><br />
+            </div>
+          </div>
+
+          <div class="contactRow">
+            <div class="col-25">Inquery Type:</div>
+            <div class="col-75">
+              <fieldset>
+                <div class="some-class">
+                  <ul>
+                    <li>
+                      <label for="inquery-1">
+                        <input
+                          type="radio"
+                          name="inquery"
+                          id="inquery-1"
+                          value="Question"
+                          checked
+                        />Question
+                      </label>
+                    </li>
+                    <li>
+                      <label for="inquery-2">
+                        <input type="radio" name="inquery" id="inquery-2" value="Comment" />Comment
+                      </label>
+                    </li>
+                    <li>
+                      <label for="inquery-3">
+                        <input
+                          type="radio"
+                          name="inquery"
+                          id="inquery-3"
+                          value="Order Problem"
+                        />Order Problem
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <!-- <div class = contactRow>
+            <div class="col-25">Order Number: </div>
+            <div class="col-75">
+              <input type="text" name="orderNumber" id="orderNumber">
+            </div>
+          </div> -->
+
+          <div class="contactRow">
+            <div class="col-25">Comments:</div>
+            <div class="col-75">
+              <textarea
+                name="comment"
+                id="userComment"
+                form="usrform"
+                cols="30"
+                rows="10"
+                required="required"
+                >Enter text here...
+              </textarea>
+            </div>
+          </div>
+
+          <input type="hidden" name="myName" id="hiddenmyName" value="Dongchan Oh" />
+
+          <div class="contactRow">
+            <input type="submit" name="submitInput" id="submitInput" value="Submit" />
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <a href="#" class="fa fa-facebook"></a>
+      <a href="#" class="fa fa-twitter"></a>
+      <a href="#" class="fa fa-google"></a>
+      <a href="#" class="fa fa-linkedin"></a>
+      <a href="#" class="fa fa-youtube"></a>
+
+      <p>© 2008-2020, FairyTaleStore.com, Inc. or its affiliates</p>
+      <p><a href="mailto:dcoh@myseneca.ca">dcoh@myseneca.ca</a></p>
+
+      <form action="https://formspree.io/mrgyjozo" method="POST" id="subscribeEmail">
+        <label id="bottomName">Your email:<input type="text" name="_replyto"/></label>
+        <button type="submit">Subscribe</button>
+      </form>
+    </footer>
+
+    <script>
+      // user Name Field input Validation //
+      var form = document.getElementById('usrform');
+      var userNameField = document.querySelector("#userName")
+      userNameField.addEventListener('keyup', (event) => {
+        var allAlpha = true;
+        var inputUserName = userNameField.value.trim().toUpperCase();
+        if(inputUserName.length === 0){
+          allAlpha = false;
+        }else{
+          for (var i = 0; i < inputUserName.length; i++){
+            if (inputUserName.charAt(i) < "A" || inputUserName.charAt(i) > "Z"){
+              if(inputUserName.charAt(i) !== " "){
+                allAlpha = false;
+              } 
+            }
+          }
+        }
+        if (!allAlpha){
+          alert("Name : Please enter a meaningful name with all alphabet letters.");
+          userNameField.value = '';
+          userNameField.focus();
+        } 
+        return allAlpha;
+      });
+      
+
+      // Address Field input Validation //
+      var addrField = document.querySelector("#userAddress")
+      addrField.addEventListener('keyup', (event) => {
+        var allNoOrAlpha = true;
+        var inputAddr = addrField.value.trim().toUpperCase();
+        if(inputAddr.length === 0){
+          allNoOrAlpha = false;
+        }
+        if (!allNoOrAlpha){
+          alert("Address : Please enter a meaningful address with all characters.");
+          addrField.value = '';
+          addrField.focus();
+        } 
+        return allNoOrAlpha;
+      });
+
+      var questionRadioBtn = document.getElementById('inquery-1');
+      questionRadioBtn.addEventListener('change', function() {
+        let removeNode = document.querySelector('#usrform > div:nth-child(8)');
+        if (removeNode.innerText.trim() === 'Order Number:') {
+          removeNode.remove();
+        }
+      });
+
+      var commentRadioBtn = document.getElementById('inquery-2');
+      commentRadioBtn.addEventListener('change', function() {
+        let removeNode = document.querySelector('#usrform > div:nth-child(8)');
+        if (removeNode.innerText.trim() === 'Order Number:') {
+          removeNode.remove();
+        }
+      });
+
+      var orderProbRaido = document.getElementById('inquery-3');
+      orderProbRaido.addEventListener('change', function() {
+        let orderNumber = document.createElement('div');
+        orderNumber.className = 'contactRow';
+        let col25 = document.createElement('div');
+        col25.className = 'col-25';
+        col25.innerText = 'Order Number: ';
+        let col75 = document.createElement('div');
+        col75.className = 'col-75';
+        let tempInput = document.createElement('input');
+        tempInput.type = 'text';
+        tempInput.name = 'orderNumber';
+        tempInput.id = 'orderNumber';
+        tempInput.maxlength="10"
+        tempInput.placeholder="Input your order number (Max length: 10)"
+        col75.appendChild(tempInput);
+        orderNumber.appendChild(col25);
+        orderNumber.appendChild(col75);
+
+        let point = document.querySelector('#usrform > div:nth-child(8)');
+        let parentNode = point.parentNode;
+        parentNode.insertBefore(orderNumber, point);
+
+        // order Number Field input Validation (Active only when order problem is selected)//
+        var orderNoField = document.querySelector("#orderNumber")
+        orderNoField.addEventListener('keyup', (event) => {
+          var allNo = true;
+          var inputOrderNo = orderNoField.value.trim();
+          if (parseInt(inputOrderNo) != inputOrderNo) {
+            alert('Please enter numbers only');
+            orderNoField.value = '';
+            orderNoField.focus();
+            allNo = false; // failed for validation
+          }   
+          return allNo;
+        });
+      });
+
+      // Text Area input Validation //
+      var commentField = document.querySelector("#userComment")
+      commentField.addEventListener('click', function(){commentField.value = '';});
+      commentField.addEventListener('keyup', (event) => {
+        var allNoOrAlpha = true;
+        var inputComment = commentField.value.trim().toUpperCase();
+        if(inputComment.length === 0){
+          allNoOrAlpha = false;
+        }
+        if (!allNoOrAlpha){
+          alert("Address : Please enter a meaningful comments with all characters.");
+          commentField.value = '';
+          commentField.focus();
+        } 
+        return allNoOrAlpha;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- saved from url=(0103)https://ict.senecacollege.ca/~patrick.crawford/shared/winter-2017/web222/lecture7/node_removeChild.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+   <title>WEB222</title>
+   <style> 
+      body { margin: 0 18%; }
+   </style>
+	<script>
+		function myFunction()
+		{
+			// Removing a specified element when knowing its parent node
+			var d = document.querySelector("#top");
+			var d_nested = document.querySelector("#nested");
+			var throwawayNode = d.removeChild(d_nested);
+
+			// Removing a specified element without having to specify its parent node
+			//var node = document.querySelector("#nested");
+			//if (node.parentNode) {
+			//  node.parentNode.removeChild(node);
+			//}
+
+			// Removing all children from an element
+			//var element = document.querySelector("#top");
+			//while (element.firstChild) {
+			//  element.removeChild(element.firstChild);
+			//}
+		}
+	</script>
+</head>
+<body>
+  <h1>WEB222 - DOM node - removeChild()</h1>
+
+	<div id="top" align="center">This is the parent div element.
+      <div id="nested">This is the child/nested div element.</div>
+    </div>
+	
+	<p id="demo">Click the button to remove the a specified element from the parent node.</p>
+
+	<button onclick="myFunction()">Try it</button>
+ 
+
+
+</body></html>

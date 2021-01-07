@@ -1,0 +1,10 @@
+
+> assignment5@1.2.0 eslint C:\Users\k\Desktop\여름학기\WEB222_NDD\Week09\Assignment5\assignment
+> eslint src/**/*.js
+
+
+C:\Users\k\Desktop\여름학기\WEB222_NDD\Week09\Assignment5\assignment\src\script.js
+  343:5  warning  Unexpected alert  no-alert
+
+✖ 1 problem (0 errors, 1 warning)
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- saved from url=(0097)https://ict.senecacollege.ca/~patrick.crawford/shared/fall-2016/int222/lecture6-pt2/position.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Position</title>
+   
+   <style type="text/css">
+	  .container{
+		border:1px solid blue;
+		padding:20px;
+		position:relative; /* absolute; fixed; static; */
+	  }
+   
+	  #col {
+		 position:absolute; /* relative; fixed; static; */
+		 width:295px;
+		 height:100px;
+		 left:10px;
+		 top:10px;
+		 background-color:grey;
+		 /*z-index: 1;*/
+		 overflow: visible; /* auto;  hidden; visible; scroll; */
+	  }
+   </style>
+</head>
+
+<body>
+   <h3>CSS Example: CSS Positioning &amp; overflow property </h3>
+   
+   <div class="container">
+	   <div id="col">
+		  This will have a grey background.
+		   <p>Here's the text for a magazine-style column.<br>
+		   Here's the text for a magazine-style column.<br>
+		   Here's the text for a magazine-style column.<br>
+		   Here's the text for a magazine-style column.<br>
+		   Here's the text for a magazine-style columnlooooooooooooooongwooooooooooooooord<br>    
+		   </p>	   
+	   </div>
+   </div>
+   <br>
+   <div class="container"></div>
+</body></html>

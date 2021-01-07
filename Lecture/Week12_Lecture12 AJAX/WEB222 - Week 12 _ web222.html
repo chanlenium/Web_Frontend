@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://web222.ca/weeks/week12/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WEB222 - Week 12 | web222</title>
+<meta name="generator" content="Jekyll v3.8.5">
+<meta property="og:title" content="WEB222 - Week 12">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Web Programming Principles">
+<meta property="og:description" content="Web Programming Principles">
+<link rel="canonical" href="https://web222.ca/weeks/week12/">
+<meta property="og:url" content="https://web222.ca/weeks/week12/">
+<meta property="og:site_name" content="web222">
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"WEB222 - Week 12","url":"https://web222.ca/weeks/week12/","description":"Web Programming Principles","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <style class="anchorjs"></style><link rel="stylesheet" href="./WEB222 - Week 12 _ web222_files/style.css">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://web222.ca/">web222</a></h1>
+      
+
+      <h1 id="web222---week-12">WEB222 - Week 12</h1>
+
+<h2 id="suggested-readings">Suggested Readings<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#suggested-readings" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX">AJAX Guide</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON">Working with JSON</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest">Using XMLHttpRequest</a></li>
+</ul>
+
+<h2 id="ajax">AJAX<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#ajax" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>AJAX is a term <a href="http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">coined in 2005 by Jesse James Garrett</a> that refers
+to an approach to web development that uses dynamic requests to a server to
+update portions of a page at runtime.  Today, the method is so common that
+it’s hard to talk about it not existing.  But at the time, it was a game changer.</p>
+
+<p>AJAX stands for Asynchronous JavaScript and XML, which is based on a group of
+web technologies: HTML (and at the time XHTML), CSS, JavaScript, the DOM, XML,
+JSON, and a web API called <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a>, or just
+XHR for short.</p>
+
+<p>Before 2005, web browsers lacked a lot of the modern features we take for granted
+today.  Web servers were used to build and serve all (or most) aspects of a web
+page.  Making changes on the page meant a full request/response trip to and from
+the server, in order to update content.  The entire page had to be reloaded for
+anything of significance to change.</p>
+
+<p>Today we expect “real-time” data to be a part of our web browsing experience.
+Consider a site like GMail or Google Maps.  If we want to see messages in
+another folder, or navigate to another city, we expect to be able to do that
+without having to reload the entire page.  AJAX makes this possible.</p>
+
+<p>Instead of modifying the entire page (DOM), we instead make background requests
+for data from servers, and then use that data to update the page’s contents
+live via the DOM’s APIs.</p>
+
+<h2 id="understanding-ajaxs-a-asynchronous-and-j-javascript">Understanding AJAX’s “A” (Asynchronous) and “J” (JavaScript)<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#understanding-ajaxs-a-asynchronous-and-j-javascript" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>As we know from previous discussions, web browsers use HTTP/HTTPS to send
+requests to web servers, which build replies and send back responses (HTML, CSS,
+images, fonts, JavaScript, etc).</p>
+
+<p>While we don’t want to have to reload the entire page in order to get updates
+from the server, we would like to be able to leverage this communication pattern
+from within the running page: we need a way to make HTTP requests, wait for
+responses from the server, and then do something with the data.</p>
+
+<p>Browsers provide a mechanism for doing this in the form of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest"><code class="language-plaintext highlighter-rouge">XMLHttpRequest</code>
+Object</a>, or
+XHR for short.  An XHR object let’s us create and send HTTP requests to a server,
+and get back data responses in various forms (XML, HTML, JSON, text, binary, etc.)</p>
+
+<p>Our XHR requests happen in the background, asynchronously (without blocking the
+main UI thread in the browser), so user’s can continue to work and interact with
+the page while we wait for a response.</p>
+
+<p>Finally, we work with XHR via JavaScript code.  Let’s look at a very basic
+example:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 1. Create a new instance of an XMLHttpRequest Object using its constructor</span>
+<span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+
+<span class="c1">// 2. Define an event handler for the `load` event, which happens when data arrives</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 3. Get the data from the `xhr` object's `responseText` property</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">data arrived</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// 4. Create an HTTP GET request to the given URL</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">http://example.com</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="c1">// 5. Send the HTTP request to the server, and wait asynchronously for the reply</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="example-1-current-bitcoin-value-in-usd">Example 1: Current Bitcoin Value in USD<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#example-1-current-bitcoin-value-in-usd" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>To demonstrate a real-world example of what we’ve been discussing, let’s
+build a simple example.  Imagine we want to create a web page that includes
+information about the current market value of <a href="https://en.wikipedia.org/wiki/Bitcoin">Bitcoin</a>, the most famous of the blockchain-based
+cryptocurrencies.</p>
+
+<p>The website <a href="https://www.blockchain.com/">https://www.blockchain.com</a> provides a number of web services we can use to get this information.  In particular,
+we’ll use <a href="https://blockchain.info/q/24hrprice">https://blockchain.info/q/24hrprice</a>, which gives the price in US dollars
+over the past 24 hours.</p>
+
+<p>Here’s an (simplified) example of what it sends when we make an HTTP request:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/2 200
+date: Sun, 02 Dec 2018 22:48:35 GMT
+content-type: text/plain; charset=utf-8
+
+4200.82
+</code></pre></div></div>
+
+<p>In the above response, we have HTTP headers, a blank line, and then the data: <code class="language-plaintext highlighter-rouge">4200.82</code>.</p>
+
+<p>We want our web page to include this information, but then automatically update
+it every minute by requesting the current value again over HTTP.  Here’s
+one way we could do it.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Bitcoin Value<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Current Bitcoin value: <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"bitcoin-value"</span><span class="nt">&gt;&lt;/span&gt;&lt;/p&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="kd">function</span> <span class="nx">updateBitcoinValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Update the </span><span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span> <span class="kd">with</span> <span class="nx">the</span> <span class="k">new</span> <span class="nx">value</span> <span class="nx">we</span> <span class="kd">get</span> <span class="k">from</span> <span class="nx">the</span> <span class="nx">server</span>
+            <span class="kd">var</span> <span class="nx">span</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#bitcoin-value</span><span class="dl">"</span><span class="p">);</span>
+            <span class="nx">span</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">;</span>
+
+            <span class="c1">// Every minute, get the new value and update the page</span>
+            <span class="kd">var</span> <span class="nx">oneMinute</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+            <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">getCurrentValue</span><span class="p">,</span> <span class="nx">oneMinute</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kd">function</span> <span class="nx">getCurrentValue</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://blockchain.info/q/24hrprice?cors=true</span><span class="dl">"</span><span class="p">;</span>
+
+            <span class="c1">// If/When the request returns successfully, get the value and update DOM </span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="c1">// Format the raw text we get from the server into a currency string</span>
+                <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">;</span>
+                <span class="kd">var</span> <span class="nx">currentValue</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">response</span><span class="p">}</span><span class="s2"> (USD)`</span><span class="p">;</span>
+                <span class="nx">updateBitcoinValue</span><span class="p">(</span><span class="nx">currentValue</span><span class="p">);</span>
+            <span class="p">};</span>
+
+            <span class="c1">// If the request fails, and we get an error, update the page with an error message</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">updateBitcoinValue</span><span class="p">(</span><span class="dl">"</span><span class="s2">unknown (error, unable to get current value)</span><span class="dl">"</span><span class="p">);</span>
+            <span class="p">};</span>
+
+            <span class="c1">// Open a GET request to the Blockchain API</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+
+            <span class="c1">// Send our HTTP request to the server, and wait for a response</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">getCurrentValue</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>See <a href="https://web222.ca/weeks/week12/bitcoin.html">bitcoin.html</a> for an online version.</p>
+
+<p>By separating the data into a separate web service, it’s possible for various
+applications to all share it, and use it in different ways.</p>
+
+<h2 id="working-with-data-json-and-xml">Working with Data: JSON and XML<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#working-with-data-json-and-xml" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Our previous example used a very simple data format: a single number.  Often
+we’ll need to work with more complex data, which includes both numbers and text,
+lists, and complex hierarchies.  To do this, we need a format that allows us
+to serialize (i.e., turn into strings) data structures like <code class="language-plaintext highlighter-rouge">Array</code>s, <code class="language-plaintext highlighter-rouge">Object</code>s, etc.</p>
+
+<p>The two most popular formats for data exchange on the internet are the
+<a href="https://en.wikipedia.org/wiki/JSON">JavaScript Object Notation (JSON)</a> and the
+<a href="https://en.wikipedia.org/wiki/XML">Extensible Markup Language (XML)</a>.</p>
+
+<p>We’re going to focus mainly on JSON, but it’s good to also know about XML.  At
+one point, a lot of the techniques we will discuss were done with XML (and many
+languages and services still use it).  However, much of the internet has
+standardized on JSON as a data exchange format.</p>
+
+<p>Let’s look at each in turn.  First, consider the following food product data:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) Name: Apple
+   Price per Pound: $1.29
+   Location: Aisle 3
+
+2) Name: Carrots
+   Price per Pound: $0.46
+   Location: Aisle 2
+</code></pre></div></div>
+
+<p>Here’s how that data might look using XML:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;products&gt;</span>
+    <span class="nt">&lt;product&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Apple<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;price</span> <span class="na">currency=</span><span class="s">"CAD"</span><span class="nt">&gt;</span>1.29<span class="nt">&lt;/price&gt;</span>
+        <span class="nt">&lt;aisle&gt;</span>3<span class="nt">&lt;/aisle&gt;</span>
+    <span class="nt">&lt;/product&gt;</span>
+    <span class="nt">&lt;product&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Carrots<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;price</span> <span class="na">currency=</span><span class="s">"CAD"</span><span class="nt">&gt;</span>0.46<span class="nt">&lt;/price&gt;</span>
+        <span class="nt">&lt;aisle&gt;</span>2<span class="nt">&lt;/aisle&gt;</span>
+    <span class="nt">&lt;/product&gt;</span>
+<span class="nt">&lt;/products&gt;</span>
+</code></pre></div></div>
+
+<p>Look familiar?  XML and HTML are both markup languages.  In XML, it’s
+possible for us to create our own tags and document structure (i.e., XML Schema).
+You can think of HTML like an instance of XML, which is what <a href="https://en.wikipedia.org/wiki/XHTML">XHTML</a> was trying to do.</p>
+
+<p>Before we look at JSON, let’s look at that same data in JavaScript, using an Object Literal:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">products</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Apple</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">price</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">currency</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CAD</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">value</span><span class="p">:</span> <span class="mf">1.29</span>
+        <span class="p">},</span>
+        <span class="na">aisle</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Carrots</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">price</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">currency</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CAD</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">value</span><span class="p">:</span> <span class="mf">0.46</span>
+        <span class="p">},</span>
+        <span class="na">aisle</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<p>Here we have two <code class="language-plaintext highlighter-rouge">Object</code>s in an <code class="language-plaintext highlighter-rouge">Array</code>.  Our <code class="language-plaintext highlighter-rouge">Object</code>s use <code class="language-plaintext highlighter-rouge">String</code>, <code class="language-plaintext highlighter-rouge">Object</code>,
+and <code class="language-plaintext highlighter-rouge">Number</code> types to represent the data.</p>
+
+<p>Finally, let’s format the same data in JSON:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apple"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CAD"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.29</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"aisle"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Carrots"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CAD"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.46</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"aisle"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Looks familiar, doesn’t it? You’ll be glad to know that since you
+already learned JavaScript Object Literals, you already learned 95% of JSON format at the same time.</p>
+
+<p>JSON and JavaScript Object Literals are very similar, but there are some
+differences. JSON is a subset of JavaScript Object Literal notation:</p>
+
+<ul>
+  <li>All keys must be double-quoted strings: <code class="language-plaintext highlighter-rouge">"key"</code> vs. <code class="language-plaintext highlighter-rouge">key</code></li>
+  <li>You don’t put comments in JSON</li>
+  <li>You can’t include function expressions in JSON, only data types:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">String</code></li>
+      <li><code class="language-plaintext highlighter-rouge">Number</code></li>
+      <li>an (JSON) <code class="language-plaintext highlighter-rouge">Object</code></li>
+      <li>an <code class="language-plaintext highlighter-rouge">Array</code></li>
+      <li>boolean <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code></li>
+      <li>the value <code class="language-plaintext highlighter-rouge">null</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>JavaScript includes built-in code for converting to/from JSON strings:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">products</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Apple</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">price</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">currency</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CAD</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">value</span><span class="p">:</span> <span class="mf">1.29</span>
+        <span class="p">},</span>
+        <span class="na">aisle</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Carrots</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">price</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">currency</span><span class="p">:</span> <span class="dl">"</span><span class="s2">CAD</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">value</span><span class="p">:</span> <span class="mf">0.46</span>
+        <span class="p">},</span>
+        <span class="na">aisle</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+<span class="p">];</span>
+<span class="c1">// 1. Turn products Object into JSON string</span>
+<span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">products</span><span class="p">);</span>
+<span class="c1">// json now equals '[{"name":"Apple","price":{"currency":"CAD","value":1.29},"aisle":3},{"name":"Carrots","price":{"currency":"CAD","value":0.46},"aisle":2}]'</span>
+
+<span class="c1">// 2. Turn JSON string back into a JS Object</span>
+<span class="nx">products</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span>
+<span class="c1">// products is now an Object</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>NOTE: <code class="language-plaintext highlighter-rouge">JSON.parse()</code> will <code class="language-plaintext highlighter-rouge">throw</code> an error if the string isn’t properly formatted JSON, so it’s good to wrap your call in a <code class="language-plaintext highlighter-rouge">try...catch</code> block.</p>
+</blockquote>
+
+<h2 id="example-2-the-dog-api">Example 2: the Dog API<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#example-2-the-dog-api" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>For our next example, let’s work with another web service, but this time
+one that returns more complex data in the form of JSON.</p>
+
+<p>The <a href="https://dog.ceo/dog-api/documentation/">Dog API</a> is a free web service
+that uses data from the <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/">Stanford Dogs Dataset</a>.  This dataset contains
+images and information about 120 breeds of dogs, and is used for machine learning
+and artificial intelligence training.</p>
+
+<p>There are a number of endpoints we can use with this API, but we’ll focus on these:</p>
+
+<ul>
+  <li><a href="https://dog.ceo/api/breeds/list/all">https://dog.ceo/api/breeds/list/all</a> - get a JSON formatted list of all breeds and sub-breeds</li>
+  <li><a href="https://dog.ceo/api/breed/hound/images/random/3">https://dog.ceo/api/breed/hound/images/random/3</a> - get a JSON formatted list of image URLs for hounds, returning 3 (we can ask for more or less)  In other words the URL works like this: <code class="language-plaintext highlighter-rouge">https://dog.ceo/api/breed/{name-of-breed}/random/{number-of-images-to-return}</code></li>
+</ul>
+
+<p>Our goal is to do the following:</p>
+
+<ol>
+  <li>Create a simple web page with an HTML <code class="language-plaintext highlighter-rouge">&lt;form&gt;</code></li>
+  <li>Use AJAX techniques to dynamically load all dog breeds into a <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> in our form</li>
+  <li>Users can specify how many images they want to load: 1 to 100.</li>
+  <li>When the user selects a breed and clicks a <code class="language-plaintext highlighter-rouge">&lt;button&gt;</code>, we’ll request the JSON list of images</li>
+  <li>Once we get the list of image URLs, we’ll start creating <code class="language-plaintext highlighter-rouge">&lt;img&gt;</code> elements in our page to show those dogs</li>
+</ol>
+
+<p>See the completed code in <a href="https://web222.ca/weeks/week12/dogs.html">dogs.html</a> and <a href="https://web222.ca/weeks/week12/dogs.js">dogs.js</a>.
+We’ll discuss snippets of the code below.</p>
+
+<h3 id="1-create-a-form">1. Create a form<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#1-create-a-form" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Let’s start with a basic <code class="language-plaintext highlighter-rouge">&lt;form&gt;</code>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"dogs-form"</span> <span class="na">action=</span><span class="s">"#"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;select</span> <span class="na">id=</span><span class="s">"breeds"</span> <span class="na">name=</span><span class="s">"breeds"</span><span class="nt">&gt;&lt;/select&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"number"</span> <span class="na">min=</span><span class="s">"1"</span> <span class="na">max=</span><span class="s">"100"</span> <span class="na">value=</span><span class="s">"5"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"btn-load"</span> <span class="na">value=</span><span class="s">"Show me dogs!"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>Our form is very simple.  Notice that it contains no <code class="language-plaintext highlighter-rouge">&lt;option&gt;</code> elements
+for the dog breeds.  We will load these dynamically once the page is loaded.
+We include a textbox for entering a number of images to show (default is <code class="language-plaintext highlighter-rouge">5</code>),
+and provide a <code class="language-plaintext highlighter-rouge">&lt;button&gt;</code> to click.</p>
+
+<h3 id="2-dynamically-load-dog-breeds-into-a-drop-down">2. Dynamically load dog breeds into a drop-down<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#2-dynamically-load-dog-breeds-into-a-drop-down" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Next we need to load our dog breeds from the Dogs API.  We’ll do that
+when the page finishes loading, and the DOM is fully created:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nx">loadDogBreeds</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Our <code class="language-plaintext highlighter-rouge">loadDogBreeds</code> function needs to create an XHR request to the Dogs API,
+and parse the JSON we get back:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">loadDogBreeds</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// See https://dog.ceo/dog-api/documentation/</span>
+    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://dog.ceo/api/breeds/list/all</span><span class="dl">"</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">breedList</span> <span class="o">=</span> <span class="nx">extractBreedList</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+        <span class="nx">updateBreedList</span><span class="p">(</span><span class="nx">breedList</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>When our request comes back (i.e., <code class="language-plaintext highlighter-rouge">xhr.onload</code>), we’ll get a JSON string
+that looks something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"{"status":"success","message":{"affenpinscher":[],"african":[],"airedale":[],"akita":[],"appenzeller":[]}}";
+</code></pre></div></div>
+
+<p>If we <code class="language-plaintext highlighter-rouge">JSON.parse()</code> that string, we’ll get an <code class="language-plaintext highlighter-rouge">Object</code> that looks like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+<span class="cm">/*
+{
+    status: "success",
+    message: {
+        affenpinscher: [],
+        african: [],
+        airedale: [],
+        akita: [],
+        appenzeller: [],
+        ...
+    }
+}
+*/</span>
+</code></pre></div></div>
+
+<p>This data has two main parts:</p>
+
+<ol>
+  <li>a <code class="language-plaintext highlighter-rouge">status</code> message, that tells us the server was successful in doing our query</li>
+  <li>a <code class="language-plaintext highlighter-rouge">message</code> body, which is itself an <code class="language-plaintext highlighter-rouge">Object</code> of key/value pairs, with the breed name and sub-breeds (if any) in an <code class="language-plaintext highlighter-rouge">Array</code>.</li>
+</ol>
+
+<p>To get all the dog breeds as a list (i.e. <code class="language-plaintext highlighter-rouge">Array</code>), we need to extract the
+<code class="language-plaintext highlighter-rouge">message</code> property, then call <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys"><code class="language-plaintext highlighter-rouge">Object.keys()</code></a>
+on its value to create an <code class="language-plaintext highlighter-rouge">Array</code> out of all the names:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">breedList</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+<span class="cm">/*
+['affenpinscher', 'african', 'airedale', 'akita', 'appenzeller', ...]
+*/</span>
+</code></pre></div></div>
+
+<p>Next we need to take this list of breed name <code class="language-plaintext highlighter-rouge">String</code>s, and create
+<code class="language-plaintext highlighter-rouge">&lt;option&gt;</code> elements that we can dynamically add to our form’s <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Get a reference to our &lt;select&gt;</span>
+<span class="kd">var</span> <span class="nx">select</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#breeds</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="c1">// Given a breed name "beagle", return an &lt;option value="beagle&gt;beagle&lt;/option&gt; </span>
+<span class="kd">function</span> <span class="nx">createBreedOption</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">option</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">option</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">option</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="nx">option</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nx">option</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Loop through each breed name in our Array, call createBreedOption()</span>
+<span class="c1">// and append the &lt;option&gt; element to our &lt;select&gt;</span>
+<span class="nx">breedList</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">breed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">breedOption</span> <span class="o">=</span> <span class="nx">createBreedOption</span><span class="p">(</span><span class="nx">breed</span><span class="p">);</span>
+    <span class="nx">select</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">breedOption</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Our web page now has a drop-down list with all 120 dog breeds.</p>
+
+<h3 id="3-get-dog-breed-image-urls-when-the-user-selects-a-breed">3. Get dog breed image URLs when the user selects a breed<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#3-get-dog-breed-image-urls-when-the-user-selects-a-breed" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>When the user selects a breed from our list and clicks a <code class="language-plaintext highlighter-rouge">&lt;button&gt;</code>,
+we need to make another HTTP request to the server.  This time
+we need to get a list of image URLs for the chosen breed.</p>
+
+<p>First, we need an event handler for the click:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">btnLoad</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#btn-load</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">btnLoad</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">breed</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#breeds</span><span class="dl">"</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+    <span class="nx">loadBreedImages</span><span class="p">(</span><span class="nx">breed</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Our <code class="language-plaintext highlighter-rouge">loadBreedImages</code> function is nearly identical to <code class="language-plaintext highlighter-rouge">loadDogBreeds</code>, but
+we use the <code class="language-plaintext highlighter-rouge">breed</code> name as part of the URL:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">loadBreedImages</span><span class="p">(</span><span class="nx">breed</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// See https://dog.ceo/dog-api/documentation/breed</span>
+    <span class="c1">// Use the imageCount and breed variables to create our URL </span>
+    <span class="kd">var</span> <span class="nx">imageCount</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#image-count</span><span class="dl">"</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`https://dog.ceo/api/breed/</span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2">/images/random/</span><span class="p">${</span><span class="nx">imageCount</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">breedImageList</span> <span class="o">=</span> <span class="nx">extractBreedImageList</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+            <span class="nx">updateBreedImages</span><span class="p">(</span><span class="nx">breedImageList</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">showError</span><span class="p">(</span><span class="dl">"</span><span class="s2">Unable to load dog breeds</span><span class="dl">"</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+    <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As before, we make a request to the server, and get back JSON, which we
+parse.  The resulting <code class="language-plaintext highlighter-rouge">Object</code> we get back looks like this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="nl">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">success</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">message</span><span class="p">:</span> <span class="p">[</span>
+       <span class="dl">"</span><span class="s2">https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg</span><span class="dl">"</span><span class="p">,</span>
+       <span class="dl">"</span><span class="s2">https://images.dog.ceo/breeds/hound-afghan/n02088094_1007.jpg</span><span class="dl">"</span><span class="p">,</span>
+       <span class="p">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Once again we get a <code class="language-plaintext highlighter-rouge">status</code> and a <code class="language-plaintext highlighter-rouge">message</code> body.  This time, however,
+the <code class="language-plaintext highlighter-rouge">message</code> is already an <code class="language-plaintext highlighter-rouge">Array</code> of URLs.</p>
+
+<h3 id="4-dynamically-create--elements-for-all-dog-breed-image-urls">4. Dynamically create <img> elements for all dog breed image URLs<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#4-dynamically-create--elements-for-all-dog-breed-image-urls" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Using the list of URLs for dog breed images from the server, we can
+easily update our page to display new images:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">imagesContainer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#images-container</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="c1">// Clear the imagesContainer if there is anything there now</span>
+<span class="nx">imagesContainer</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+
+<span class="c1">// Turn a url String into an &lt;img src="url"&gt; element</span>
+<span class="kd">function</span> <span class="nx">createImgElement</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">img</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">img</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Loop through the image URLs, and create new &lt;img&gt; elements</span>
+<span class="nx">breedImageList</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="nx">createImgElement</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="nx">imagesContainer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>We’ve now got a relatively simple page that can be changed using live data
+to look completely different, depending on the needs of the user.  We didn’t
+have to write HTML for every image, which would have involved hand-writing
+120 * 150 = 18,000 <code class="language-plaintext highlighter-rouge">&lt;img&gt;</code> elements!  Using AJAX we can do this with very
+little code.</p>
+
+<p>Complete code for the example above can be found in the following files:</p>
+
+<ul>
+  <li><a href="https://github.com/sictweb/web222/blob/master/weeks/week12/dogs.html">dogs.html</a></li>
+  <li><a href="https://github.com/sictweb/web222/blob/master/weeks/week12/dogs.js">dogs.js</a></li>
+  <li><a href="https://github.com/sictweb/web222/blob/master/weeks/week12/styles.css">styles.css</a></li>
+</ul>
+
+<h2 id="xhr-and-cross-origin-requests">XHR and Cross-Origin Requests<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#xhr-and-cross-origin-requests" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>It should be noted that we’ve been making requests to third-party web servers
+in the example above.  This is something that won’t always work for all servers,
+or all data types.</p>
+
+<p>In the examples above, the servers were configured to allow <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin
+Resource Sharing (CORS)</a>.
+By default, browsers maintain a sandbox around resources (scripts, images, data)
+from one origin, and don’t let it mix in unsafe ways with resources from other
+origins.</p>
+
+<p>In general, it’s best to load data from the same origin as your page (i.e.,
+the same web server).  The so-called “Same Origin” policy states that you can’t
+load data from other origins.  However, using CORS headers, servers and browsers
+can allow this in some cases.  In the examples above, the servers added a header
+<code class="language-plaintext highlighter-rouge">Access-Control-Allow-Origin: *</code> to indicate that cross-origin requests were
+OK.</p>
+
+<p>If ever you are trying to use XHR to request data from a serer, and it won’t work,
+the problem is almost certainly related to CORS.</p>
+
+<h2 id="other-mechanisms-for-working-with-data">Other Mechanisms for working with Data<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#other-mechanisms-for-working-with-data" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>While XHR is a historically popular choice for accessing data from web services,
+in recent years a number of new APIs have also emerged that offer both similar
+and enhanced capabilities.  Discussing these in any detail is beyond the scope
+of this course; however, it is important that you’re aware of them, and look
+out for opportunities to learn and use them in future courses and projects.</p>
+
+<h3 id="fetch-api"><code class="language-plaintext highlighter-rouge">fetch()</code> API<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#fetch-api" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"><code class="language-plaintext highlighter-rouge">fetch()</code>API</a> provides
+JavaScript developers a rich set of objects and functions for working with
+the entire HTTP network infrastructure, including things like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">requests</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response">responses</a>,
+the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache">cache</a>, etc.
+It uses the modern <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> API for handling callbacks.</p>
+
+<p>Here’s what it would look like to use <code class="language-plaintext highlighter-rouge">fetch</code> to request the current Bitcoin
+value from our first example above:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">fetch</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://blockchain.info/q/24hrprice?cors=true</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">currentValue</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">()}</span><span class="s2"> (USD)`</span><span class="p">;</span>
+    <span class="nx">updateBitcoinValue</span><span class="p">(</span><span class="nx">currentValue</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">updateBitcoinValue</span><span class="p">(</span><span class="dl">"</span><span class="s2">unknown (error, unable to get current value)</span><span class="dl">"</span><span class="p">);</span> 
+  <span class="p">});</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">fetch</code> offers much greater control over the network, and makes it easier to
+process data coming from the server.</p>
+
+<h3 id="server-sent-events">Server Sent Events<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#server-sent-events" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>With our Bitcoin example, we needed to constantly poll (i.e., re-request) the
+updated value from the server.  Another approach would be to wait for the server
+to send us an update (push).  One way to accomplish this is with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">Server Sent Events</a>.</p>
+
+<p>Server Sent Events allow web sites to open a long running connection with a server, and get updates from the server when there is new data.  On the browser
+side, we use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource"><code class="language-plaintext highlighter-rouge">EventSource</code></a> <code class="language-plaintext highlighter-rouge">Object</code> to process
+these events, just as we would other types of events in a web page.</p>
+
+<h3 id="web-sockets">Web Sockets<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#web-sockets" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Server Sent Events are great for 1-way communciation from a server to a browser,
+but sometimes we need to <em>also</em> send data back to the server at regular intervals.
+Consider a chat application, where we need to both receive and send messages.</p>
+
+<p>In such systems, we need a bi-directional, long-running connection to the server.
+The browser provides this in the form of a <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"><code class="language-plaintext highlighter-rouge">WebSocket</code></a>.  Web Sockets
+can be connected to different backends written in any language.  Within the browser, we receive events when data arrives, and send data when we need to over
+the socket.</p>
+
+<h2 id="modern-front-end-development">Modern Front End Development<a class="anchorjs-link " href="https://web222.ca/weeks/week12/#modern-front-end-development" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>The concepts we’ve been discussing above have come to define the modern
+approach to web development.  Browsers have gotten faster and more powerful,
+and the APIs and tools for building web services more full-featured.</p>
+
+<p>As a result, new approaches to front-end development have taken over.
+In your follow-up courses you’ll learn more about popular front-end frameworks,
+which build on the low-level ideas we’ve been using here (HTML, CSS, JS, DOM, JSON), for example:</p>
+
+<ul>
+  <li><a href="https://reactjs.org/">React</a></li>
+  <li><a href="https://angular.io/">Angular</a></li>
+  <li><a href="https://vuejs.org/">Vue</a></li>
+  <li><a href="https://www.emberjs.com/">Ember</a></li>
+</ul>
+
+<p>These frameworks take a data-driven approach to developing on the web, separating
+an applications data and state from its presentation.  The ideas begun with AJAX
+are taken to another level, and single-page HTML applications are used to create
+rich interfaces.</p>
+
+<p>Understanding the foundation for how all of this works, from HTML, CSS, and JS to JSON and XHR, will be an important part of taking the next step.</p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/sictweb/web222/edit/master/weeks/week12/README.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="./WEB222 - Week 12 _ web222_files/anchor.min.js.다운로드" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  
+
+</body></html>

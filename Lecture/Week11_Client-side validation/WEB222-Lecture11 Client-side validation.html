@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://web222.ca/weeks/week11/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WEB222 - Week 11 | web222</title>
+<meta name="generator" content="Jekyll v3.8.5">
+<meta property="og:title" content="WEB222 - Week 11">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Web Programming Principles">
+<meta property="og:description" content="Web Programming Principles">
+<link rel="canonical" href="https://web222.ca/weeks/week11/">
+<meta property="og:url" content="https://web222.ca/weeks/week11/">
+<meta property="og:site_name" content="web222">
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"WEB222 - Week 11","url":"https://web222.ca/weeks/week11/","description":"Web Programming Principles","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <style class="anchorjs"></style><link rel="stylesheet" href="./WEB222 - Week 11 _ web222_files/style.css">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://web222.ca/">web222</a></h1>
+      
+
+      <h1 id="web222---week-11">WEB222 - Week 11</h1>
+
+<h2 id="suggested-readings">Suggested Readings<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#suggested-readings" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation">HTML Form Validation</a></li>
+  <li><a href="https://web222.ca/static-site-hosting.html">Static Site Hosting</a></li>
+</ul>
+
+<h2 id="client-side-form-validation">Client Side Form Validation<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#client-side-form-validation" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>When a user submits a form, we generally want to send the form’s data to a server.
+We use the form’s <code class="language-plaintext highlighter-rouge">action</code> to specify a server URL, and a <code class="language-plaintext highlighter-rouge">method</code> to indicate the
+HTTP request type to use when sending the data.</p>
+
+<p>Before we can use this data in a meaningful way, we need to validate it.  It’s
+easy for users to make typos, enter the right information but in the wrong field,
+or use a format we aren’t expecting.  We need to be able to parse and understand
+the data using code.  This means having data that follows some rules.</p>
+
+<p>In order to be able to work with user data, we have to provide some mechanisms for
+enforcing these rules, and give users hints, guides, and safety checks as they
+are entering data and submitting forms.</p>
+
+<p>We have two opportunities to validate form data:</p>
+
+<ol>
+  <li>Client-Side: before we submit the form to the server, we validate it in the browser
+using HTML5 and JavaScript.</li>
+  <li>Server-Side: after the data is submitted, the server must re-validate it.</li>
+</ol>
+
+<p>We will be focusing on client-side validation in this course.</p>
+
+<p>You might be wondering why we bother validating form data twice, if we’re just going
+to re-validate it no matter what on the server.  There are a number of reasons:</p>
+
+<ol>
+  <li>Save bandwidth: don’t send data over the network if it’s incomplete or not in the correct form</li>
+  <li>Immediate feedback: users don’t have to wait for their data to travel all the way to the server, and the page to reload, before getting feedback that they need to correct something simple.</li>
+  <li>Contextual feedback: prompt users to correct mistakes as they are entering the data vs. at the end, after they’ve moved on from entering some piece of information (e.g. a credit card).</li>
+</ol>
+
+<h2 id="html5-validation-features">HTML5 Validation Features<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#html5-validation-features" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>We’ve already discussed a number of important <code class="language-plaintext highlighter-rouge">&lt;input&gt;</code> types that allow us to 
+tell the browser about the type of data we expect, for example <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number"><code class="language-plaintext highlighter-rouge">&lt;input type="tel"&gt;</code></a> for telephone numbers
+or <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email"><code class="language-plaintext highlighter-rouge">&lt;input type="email"&gt;</code></a>
+for email addresses.</p>
+
+<p>Each of these special purpose <code class="language-plaintext highlighter-rouge">&lt;input&gt;</code> types comes with its own set of built-in data validation:</p>
+
+<h3 id="email-address">Email Address<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#email-address" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email"><code class="language-plaintext highlighter-rouge">&lt;input type="email"&gt;</code></a></p>
+
+<p>An email address must not be an empty string, and must be a valid (i.e., text is in valid email format vs. email address actually exists).  If you include the <code class="language-plaintext highlighter-rouge">multiple</code> attribute, the control will allow a list of addresses, and validate each one.</p>
+
+<h3 id="telephone-number">Telephone Number<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#telephone-number" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number"><code class="language-plaintext highlighter-rouge">&lt;input type="tel"&gt;</code></a></p>
+
+<p>Phone numbers are very difficult to validate, because they <a href="https://github.com/googlei18n/libphonenumber/blob/master/FALSEHOODS.md">differ so much around the world</a>.
+You might think you could just check for something like <code class="language-plaintext highlighter-rouge">555-555-5555</code>, but this would miss
+things like country codes, number patterns that use a different number of digits, short-codes
+for texting, 1-800 style numbers, etc.</p>
+
+<p>As a result, there is no default validation applied to a <code class="language-plaintext highlighter-rouge">tel</code> type input.</p>
+
+<h3 id="url">URL<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#url" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url"><code class="language-plaintext highlighter-rouge">&lt;input type="url"&gt;</code></a></p>
+
+<p>Unlike telephone numbers, URLs <em>can</em> be validated.  If you use a <code class="language-plaintext highlighter-rouge">url</code> type input, the browser
+will make sure it is not empty, and that the value is a valid URL.</p>
+
+<h3 id="dates-and-times">Dates and Times<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#dates-and-times" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date"><code class="language-plaintext highlighter-rouge">&lt;input type="date"&gt;</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/time"><code class="language-plaintext highlighter-rouge">&lt;input type="time"&gt;</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/week"><code class="language-plaintext highlighter-rouge">&lt;input type="week"&gt;</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/month"><code class="language-plaintext highlighter-rouge">&lt;input type="month"&gt;</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date-local"><code class="language-plaintext highlighter-rouge">&lt;input type="date-local"&gt;</code></a></p>
+
+<p>Dates and times are not validated by the browser.  However, the user will usually be prompted
+to “pick” a date/time value visually instead of entering one as text.  You can also further
+restrict the date/time by adding a <code class="language-plaintext highlighter-rouge">min="..."</code> or <code class="language-plaintext highlighter-rouge">max="..."</code> to the <code class="language-plaintext highlighter-rouge">input</code>, which
+specifies a date/time to use as a lower or upper range when validating.</p>
+
+<h3 id="colour">Colour<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#colour" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color"><code class="language-plaintext highlighter-rouge">&lt;input type="color"&gt;</code></a></p>
+
+<p>A <code class="language-plaintext highlighter-rouge">color</code>’s value is considered to be invalid if it can’t be converted (by the browser) into a
+seven-character lower-case hexadecimal value (e.g., <code class="language-plaintext highlighter-rouge">#000000</code>).</p>
+
+<h3 id="number">Number<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#number" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number"><code class="language-plaintext highlighter-rouge">&lt;input type="number"&gt;</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range"><code class="language-plaintext highlighter-rouge">&lt;input type="range"&gt;</code></a></p>
+
+<p>A <code class="language-plaintext highlighter-rouge">number</code> must be a valid number, or the browser won’t allow it.  You can also further
+restrict the number’s value by adding a <code class="language-plaintext highlighter-rouge">min="..."</code> or <code class="language-plaintext highlighter-rouge">max="..."</code> to the <code class="language-plaintext highlighter-rouge">input</code>, which
+specifies a lower or upper range when validating.</p>
+
+<h2 id="using-attributes-to-prevent-invalid-data">Using Attributes to Prevent Invalid Data<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#using-attributes-to-prevent-invalid-data" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>Beyond choosing trying to choose the most appropriate <code class="language-plaintext highlighter-rouge">&lt;input&gt;</code> type for your data,
+another layer of client-side validation comes from using attributes to indicate
+to both the user and browser what we expect to be entered.</p>
+
+<h3 id="placeholder-and-title"><code class="language-plaintext highlighter-rouge">placeholder</code> and <code class="language-plaintext highlighter-rouge">title</code><a class="anchorjs-link " href="https://web222.ca/weeks/week11/#placeholder-and-title" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>We’ve discussed <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Labels_and_placeholders"><code class="language-plaintext highlighter-rouge">placeholder</code></a> previously as part of our forms and CSS discussion. It’s important to highlight it once again
+since it also plays an important role in helping the user understand how to enter
+data properly.</p>
+
+<p>Together with <code class="language-plaintext highlighter-rouge">&lt;label&gt;</code>s and the <code class="language-plaintext highlighter-rouge">title</code> attribute (shown when you hover over
+an element in a tooltip), these extra bits of text provide important clues and
+instructions about how to use a given input control.</p>
+
+<p>For example, if we are expecting the user to enter a list of email addresses,
+we could do the following:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"address-list"</span><span class="nt">&gt;</span>Email Address List<span class="nt">&lt;/label&gt;</span>
+<span class="nt">&lt;input</span>
+    <span class="na">id=</span><span class="s">"address-list"</span>
+    <span class="na">type=</span><span class="s">"email"</span>
+    <span class="na">multiple</span>
+    <span class="na">placeholder=</span><span class="s">"name1@example.com, name2@example.com, ..."</span>
+    <span class="na">title=</span><span class="s">"List of email addresses, separated by commas"</span>
+<span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="disabled"><code class="language-plaintext highlighter-rouge">disabled</code><a class="anchorjs-link " href="https://web222.ca/weeks/week11/#disabled" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#disabled"><code class="language-plaintext highlighter-rouge">disabled</code> attribute</a> 
+is a boolean (i.e., it is present or not present) that indicates that a field cannot
+be interacted with by the user.  In the browser it will show up with a dimmer colour,
+and clicking it will have no effect.</p>
+
+<p>We can use <code class="language-plaintext highlighter-rouge">disabled</code> to turn off certain controls in a form that don’t currently apply.
+Sometimes a form will have options with dependencies on other controls.  For example,
+booking a flight that is one-way vs. two-way and whether or not you 
+need a second date entered for the return trip.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/s"</span> <span class="na">name=</span><span class="s">"login"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"flight"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"date"</span> <span class="na">name=</span><span class="s">"date1"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"return-flight"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"date"</span> <span class="na">value=</span><span class="s">"date2"</span> <span class="na">disabled</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>Using <code class="language-plaintext highlighter-rouge">disabled</code> allows us to include and display optional input options in a form
+without polluting the data by accidentally allowing the user to enter information
+that isn’t appropriate.</p>
+
+<h3 id="required"><code class="language-plaintext highlighter-rouge">required</code><a class="anchorjs-link " href="https://web222.ca/weeks/week11/#required" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#required"><code class="language-plaintext highlighter-rouge">required</code> attribute</a> is a boolean (i.e., it is present or not present) that indicates
+that a field <strong>must</strong> have a value before the user can submit the form.  The browser
+will block attempts to submit until a value has been entered.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/s"</span> <span class="na">name=</span><span class="s">"login"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"username"</span> <span class="na">required</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">required</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Login"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>In the form above, both the <code class="language-plaintext highlighter-rouge">username</code> and <code class="language-plaintext highlighter-rouge">password</code> fields are required, and must
+have a value before the form can be submitted (i..e, by clicking the <code class="language-plaintext highlighter-rouge">Login</code> button).
+Notice that the <code class="language-plaintext highlighter-rouge">submit</code> control does not have <code class="language-plaintext highlighter-rouge">required</code> attribute.</p>
+
+<p>When a field has the <code class="language-plaintext highlighter-rouge">required</code> attribute, the browser automatically applies the <code class="language-plaintext highlighter-rouge">:required</code>
+pseudo-class.  On the other hand, any field <em>without</em> the <code class="language-plaintext highlighter-rouge">required</code> attribute automatically
+gets the <code class="language-plaintext highlighter-rouge">:optional</code> pseudo-class applied.  This can be useful in CSS styling.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">input</span><span class="nd">:required</span> <span class="p">{</span>
+    <span class="c">/* styles for required input controls */</span>
+<span class="p">}</span>
+
+<span class="nt">input</span><span class="nd">:optional</span> <span class="p">{</span>
+    <span class="c">/* styles for optional input controls */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="pattern"><code class="language-plaintext highlighter-rouge">pattern</code><a class="anchorjs-link " href="https://web222.ca/weeks/week11/#pattern" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation#Validating_against_a_regular_expression"><code class="language-plaintext highlighter-rouge">pattern</code> attribute</a>
+allows us to include a regular expression for the browser to use when validating
+the value entered by a user for a given input control.</p>
+
+<p>For example, imagine if we need the user to enter a file extension and want to support
+data of the following form <code class="language-plaintext highlighter-rouge">.exe</code>, <code class="language-plaintext highlighter-rouge">.EXE</code>, or <code class="language-plaintext highlighter-rouge">exe</code>.:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span>
+    <span class="na">name=</span><span class="s">"file-extension"</span>
+    <span class="na">type=</span><span class="s">"text"</span>
+    <span class="na">placeholder=</span><span class="s">".exe"</span>
+    <span class="na">pattern=</span><span class="s">"\.?[a-zA-Z]{3}"</span>
+<span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>Consider how you might write a regular expression for each of the following:</p>
+
+<ul>
+  <li>social security number (###-##-####)</li>
+  <li>phone number (555-555-5555 or 555-5555 or (555) 555-555)</li>
+  <li>ip address (127.0.0.1 or 255.255.255.255)</li>
+  <li>username (alpha, numbers underscore, dash, 8-16 long)</li>
+  <li>password (alpha, number, symbols, underscore, dash, up to 256 long)</li>
+  <li>postal code (m5w 1e6 or M5W 1E6 or M5W1E6)</li>
+  <li>price ($1.50 or 1.50 or 1)</li>
+  <li>seneca course code (WEB222SSA)</li>
+</ul>
+
+<h2 id="javascript-and-client-side-validation">JavaScript and Client-Side Validation<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#javascript-and-client-side-validation" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+
+<p>All of the methods above are examples of static checks (i.e., they don’t change)
+that we’re adding to our form controls.  They do a lot to help guard against
+invalid data; however, there are times that we need more flexible control
+over what happens.</p>
+
+<p>In order to add dynamic checks (i.e., can be changed at runtime) we need to layer
+in use of JavaScript.  By using JavaScript we have more freedom to create custom
+and complex validation rules beyond the set of static options provided by HTML
+and the browser.  We can also use JavaScript in combination with CSS to provide
+a better user experience:</p>
+
+<ul>
+  <li>display more meaningful, context-aware error messages</li>
+  <li>show/hide error messages depending on the location of the cursor and where the user is focused</li>
+  <li>place errors (or other information) anywhere in the DOM vs. being limited to labels, placeholder or tooltip text</li>
+</ul>
+
+<h3 id="accessing-form-fields">Accessing Form Fields<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#accessing-form-fields" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>When writing JavaScript to validate form fields, there are a number of ways
+to access the input controls and get their values.  Consider the following
+form:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"info-form"</span> <span class="na">name=</span><span class="s">"info"</span> <span class="na">action=</span><span class="s">"/i"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"first-name"</span> <span class="na">name=</span><span class="s">"fname"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"number-list"</span> <span class="na">name=</span><span class="s">"number-list"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>Here are some of different ways we could access this form:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 1. Using its id and getElementById()</span>
+<span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">info-form</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// 2. Using its id and querySelector()</span>
+<span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#info-form</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// 3. Using document.forms and the id or name of the form</span>
+<span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="dl">"</span><span class="s2">info-form</span><span class="dl">"</span><span class="p">];</span> 
+</code></pre></div></div>
+
+<p>Once we have a reference to the <code class="language-plaintext highlighter-rouge">&lt;form&gt;</code> element in JavaScript, we can use the
+<code class="language-plaintext highlighter-rouge">name</code> of the form controls to get access to the individual fields and there <code class="language-plaintext highlighter-rouge">.value</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Notice that we must wrap values with '-' in their names in ["..."] to access them.</span>
+<span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="dl">"</span><span class="s2">info-form</span><span class="dl">"</span><span class="p">];</span> 
+<span class="kd">var</span> <span class="nx">fname</span> <span class="o">=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">fname</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">numberList</span> <span class="o">=</span> <span class="nx">form</span><span class="p">[</span><span class="dl">"</span><span class="s2">number-list</span><span class="dl">"</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="special-cases-for-obtaining-form-values">Special Cases for Obtaining Form Values<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#special-cases-for-obtaining-form-values" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>Some form controls need different approaches when you want to access their value
+in JavaScript:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">&lt;textarea&gt;</code>: use the <code class="language-plaintext highlighter-rouge">.value</code> property to access the text.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;input type="radio"&gt;</code>: use the <code class="language-plaintext highlighter-rouge">name</code> property (i.e., all radio buttons will use the same <code class="language-plaintext highlighter-rouge">name</code> in a group) to iterate over all possible radio controls, and then look at the <code class="language-plaintext highlighter-rouge">.checked</code> property, which will be <code class="language-plaintext highlighter-rouge">true</code> for the one checked.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;input type="checkbox"&gt;</code>: use the <code class="language-plaintext highlighter-rouge">name</code> property to iterate over all possible radio controls, and then look at the <code class="language-plaintext highlighter-rouge">.checked</code> property, which will be <code class="language-plaintext highlighter-rouge">true</code> for the one checked.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;select&gt;</code>: use the <code class="language-plaintext highlighter-rouge">selectedIndex</code> to determine which <code class="language-plaintext highlighter-rouge">&lt;option&gt;</code> index was selected (if any).  A value of <code class="language-plaintext highlighter-rouge">-1</code> means none are currently selected; a value greater than <code class="language-plaintext highlighter-rouge">-1</code> indicates the index to use when accessing the <code class="language-plaintext highlighter-rouge">options[n]</code> array for the chosen option.  If the <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> is defined to allow for <code class="language-plaintext highlighter-rouge">multiple</code> options, you can loop through the options and inspect the <code class="language-plaintext highlighter-rouge">.selected</code> property to determine if it’s <code class="language-plaintext highlighter-rouge">true</code>.</li>
+</ol>
+
+<p>Consider the following form:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"info-form"</span> <span class="na">name=</span><span class="s">"info"</span> <span class="na">action=</span><span class="s">"/i"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"text"</span><span class="nt">&gt;</span>Enter some text<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;textarea</span> <span class="na">id=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"text"</span><span class="nt">&gt;&lt;/textarea&gt;</span>
+
+    <span class="nt">&lt;fieldset&gt;</span>
+        <span class="nt">&lt;legend&gt;</span>Pick a Colour<span class="nt">&lt;/legend&gt;</span>
+
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"colour-red"</span><span class="nt">&gt;</span>Red<span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"colour"</span> <span class="na">id=</span><span class="s">"colour-red"</span> <span class="na">value=</span><span class="s">"red"</span> <span class="na">checked</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"colour-green"</span><span class="nt">&gt;</span>Green<span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"colour"</span> <span class="na">id=</span><span class="s">"colour-green"</span> <span class="na">value=</span><span class="s">"green"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"colour-blue"</span><span class="nt">&gt;</span>Red<span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"colour"</span> <span class="na">id=</span><span class="s">"colour-blue"</span> <span class="na">value=</span><span class="s">"blue"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/fieldset&gt;</span>
+
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"agree-disagree"</span><span class="nt">&gt;</span>I agree with the terms and conditions.<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"agree"</span> <span class="na">id=</span><span class="s">"agree-disagree"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"food"</span><span class="nt">&gt;</span>Favourite Food<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;select</span> <span class="na">id=</span><span class="s">"food"</span> <span class="na">name=</span><span class="s">"food"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"pizza"</span><span class="nt">&gt;</span>Pizza<span class="nt">&lt;/option&gt;</span>
+        <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"tacos"</span><span class="nt">&gt;</span>Tacos<span class="nt">&lt;/option&gt;</span>
+        <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"salad"</span><span class="nt">&gt;</span>Salad<span class="nt">&lt;/option&gt;</span>
+        <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"other"</span><span class="nt">&gt;</span>Other<span class="nt">&lt;/option&gt;</span>
+    <span class="nt">&lt;/select&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>In order to access the form’s values in code, we could do the following:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#info-form</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Get the value form the &lt;textarea&gt;</span>
+<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+
+<span class="c1">// Get the chosen colour value from the radio button group</span>
+<span class="kd">var</span> <span class="nx">colour</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">colourChoices</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">colour</span><span class="p">);</span> <span class="c1">// convert to array</span>
+<span class="nx">colourChoices</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">option</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">option</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">colour</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// Get the chosen food value form the &lt;select&gt;</span>
+<span class="kd">var</span> <span class="nx">food</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">None</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// there may be nothing selected</span>
+<span class="kd">var</span> <span class="nx">foodChoices</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">food</span><span class="p">);</span> <span class="c1">// convert to array</span>
+<span class="nx">foodChoices</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">option</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">option</span><span class="p">.</span><span class="nx">selected</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">food</span> <span class="o">=</span> <span class="nx">option</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="using-the-submit-event-to-validate-forms-with-javascript">Using the <code class="language-plaintext highlighter-rouge">submit</code> Event to Validate Forms with JavaScript<a class="anchorjs-link " href="https://web222.ca/weeks/week11/#using-the-submit-event-to-validate-forms-with-javascript" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+
+<p>There are a wide variety of custom validation tests we can write via JavaScript:</p>
+
+<ul>
+  <li>Check for the presence or absence of a field</li>
+  <li>Check the value of a field, and determine if it’s within an expected range, of a specific type, etc.</li>
+  <li>Confirm that some value is “real” vs. matching an expected format.  (e.g., does a user id exist?)</li>
+  <li>Evaluate a group of input values together as a group.  Do they make sense together?</li>
+</ul>
+
+<p>An HTML <code class="language-plaintext highlighter-rouge">&lt;form&gt;</code> element exposes the <code class="language-plaintext highlighter-rouge">submit</code> event (and <code class="language-plaintext highlighter-rouge">onsubmit</code> event property), which
+we can use to add custom JavaScript code to handle the case that the user is trying to
+submit a form:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"info-form"</span> <span class="na">name=</span><span class="s">"info"</span> <span class="na">action=</span><span class="s">"/i"</span><span class="nt">&gt;</span>
+    ...
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">infoForm</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">info-form</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">// submit event fired when the user clicks "submit" button</span>
+    <span class="nx">infoForm</span><span class="p">.</span><span class="nx">onsubmit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Perform extra validation here.  When finished validating, return</span>
+        <span class="c1">// either `true` (form is valid) or `false` (form is invalid) to tell</span>
+        <span class="c1">// the browser how to proceed.</span>
+    <span class="p">};</span>
+
+    <span class="c1">// reset event fired when the user clicks a "reset" button</span>
+    <span class="nx">infoForm</span><span class="p">.</span><span class="nx">onreset</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// If you ever need to do extra work to clear a form, do it here.</span>
+    <span class="p">};</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>Consider the example of a form that asks the user to enter a list of 2-4
+numbers.  We’d like to allow the user as much freedom to enter this list as possible,
+and support any style of entry:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error-msg"</span> <span class="na">class=</span><span class="s">"error hidden"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+<span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"info-form"</span> <span class="na">name=</span><span class="s">"info"</span> <span class="na">action=</span><span class="s">"/i"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"number-list"</span><span class="nt">&gt;</span>Number list<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"number-list"</span> <span class="na">name=</span><span class="s">"list"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">infoForm</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">info-form</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="nx">infoForm</span><span class="p">.</span><span class="nx">onsubmit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Check if number list is valid, and return true if it is</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">validateNumberList</span><span class="p">())</span> <span class="p">{</span>
+            <span class="c1">// Hide the error message if it was displayed previously</span>
+            <span class="nx">hideErrorMessage</span><span class="p">();</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Number list is invalid, so display error message and return false</span>
+        <span class="nx">showErrorMessage</span><span class="p">(</span><span class="dl">"</span><span class="s2">Number list is invalid: expected 2 to 4 numbers in a list.</span><span class="dl">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="kd">function</span> <span class="nx">showErrorMessage</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">errMessage</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#error-msg</span><span class="dl">'</span><span class="p">);</span>
+        <span class="c1">// Remove the hidden class so the error message shows.</span>
+        <span class="nx">errMessage</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="dl">'</span><span class="s1">hidden</span><span class="dl">'</span><span class="p">);</span>
+        <span class="c1">// Set the error message text</span>
+        <span class="nx">errMessage</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">hideErrorMessage</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">errMessage</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#error-msg</span><span class="dl">'</span><span class="p">);</span>
+        <span class="c1">// Add the hidden class so the error message goes away.</span>
+        <span class="nx">errMessage</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">hidden</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">getNumberList</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Get the number-list </span><span class="o">&lt;</span><span class="nx">input</span><span class="o">&gt;</span> <span class="nx">value</span>
+        <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#number-list</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+
+        <span class="c1">// Get rid of leading/trailing spaces</span>
+        <span class="nx">list</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+
+        <span class="c1">// Split the string into an array, separated by spaces, commas, or a combo of each</span>
+        <span class="k">return</span> <span class="nx">list</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr"> ,</span><span class="se">]</span><span class="sr">+/</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">validateNumberList</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">getNumberList</span><span class="p">();</span>
+
+        <span class="c1">// Make sure we have between 2 and 4 elements.  If not, return `false`</span>
+        <span class="c1">// to indicate this form is invalid (don't submit)</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span><span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span><span class="mi">4</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Make sure each element in the list is a number</span>
+        <span class="kd">function</span> <span class="nx">isNumber</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Loop across every value in the array, and call isNumber() on the value.</span>
+        <span class="c1">// Return true if EVERY element passes isNumber, and false otherwise.</span>
+        <span class="k">return</span> <span class="nx">list</span><span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="nx">isNumber</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/sictweb/web222/edit/master/weeks/week11/README.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="./WEB222 - Week 11 _ web222_files/anchor.min.js.다운로드" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  
+
+</body></html>
